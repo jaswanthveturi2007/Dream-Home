@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dream Home Real Estate</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f4f6f9;color:#222}
+header{background:#102c54;color:white;padding:20px 7%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
+.logo{font-size:25px;font-weight:bold}
+nav a{color:white;text-decoration:none;margin:10px}
+.hero{background:linear-gradient(120deg,#102c54,#2875a8);color:white;text-align:center;padding:75px 15px}
+.hero h1{font-size:38px;margin-bottom:15px}
+.hero p{margin-bottom:25px}
+.search-box{background:white;padding:15px;border-radius:10px;max-width:900px;margin:auto;display:flex;gap:10px;flex-wrap:wrap}
+input,select,textarea{padding:12px;border:1px solid #ccc;border-radius:6px;flex:1;min-width:130px}
+button{background:#f39c12;color:white;border:0;padding:12px 20px;border-radius:6px;cursor:pointer;font-weight:bold}
+button:hover{background:#d98200}
+section{padding:45px 7%}
+.section-title{text-align:center;margin-bottom:30px;color:#102c54}
+.properties{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.card{background:white;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px #0002}
+.card img{width:100%;height:180px;object-fit:cover}
+.card-content{padding:18px}
+.card h3{margin-bottom:10px;color:#102c54}
+.price{color:#e67e22;font-size:20px;font-weight:bold;margin:12px 0}
+.card button{width:100%;margin-top:10px}
+.panel{background:white;max-width:600px;margin:auto;padding:25px;border-radius:10px;box-shadow:0 3px 12px #0002}
+.panel input,.panel select,.panel textarea{width:100%;margin:8px 0}
+.panel button{margin-top:10px;width:100%}
+.message{text-align:center;margin:20px;color:#102c54}
+footer{background:#102c54;color:white;text-align:center;padding:25px}
+@media(max-width:600px){.hero h1{font-size:28px}header{justify-content:center}}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">🏡 Dream Home</div>
+<nav>
+<a href="#home">Home</a>
+<a href="#properties">Properties</a>
+<a href="#add">Sell Property</a>
+<a href="#login">Login</a>
+</nav>
+</header>
+
+<div class="hero" id="home">
+<h1>Find Your Dream Home</h1>
+<p>Find Houses, Flats, Lands and Properties at the Best Prices</p>
+<div class="search-box">
+<input id="city" placeholder="Enter any city or location">
+<select id="category">
+<option value="All">All Properties</option>
+<option value="House">House</option>
+<option value="Flat">Flat</option>
+<option value="Land">Land</option>
+</select>
+<select id="purpose">
+<option value="All">Buy or Rent</option>
+<option value="Buy">Buy</option>
+<option value="Rent">Rent</option>
+</select>
+<button onclick="searchProperties()">Search</button>
+</div>
+</div>
+
+<section id="properties">
+<h2 class="section-title">Available Properties</h2>
+<div class="properties" id="propertyList"></div>
+<p class="message" id="message"></p>
+</section>
+
+<section id="add">
+<h2 class="section-title">Sell Your Property</h2>
+<div class="panel">
+<input id="pname" placeholder="Property Title">
+<input id="plocation" placeholder="City / Location">
+<select id="ptype">
+<option value="House">House</option>
+<option value="Flat">Flat</option>
+<option value="Land">Land</option>
+</select>
+<select id="ppurpose">
+<option value="Buy">For Sale</option>
+<option value="Rent">For Rent</option>
+</select>
+<input id="pprice" type="number" placeholder="Price in Rupees">
+<input id="pcontact" type="tel" placeholder="Contact Number">
+<button onclick="addProperty()">Add Property</button>
+<p id="addMessage"></p>
+</div>
+</section>
+
+<section id="login">
+<h2 class="section-title">User Login</h2>
+<div class="panel">
+<input id="username" placeholder="Enter Your Name">
+<input id="mobile" type="tel" maxlength="10" placeholder="10 Digit Mobile Number">
+<button onclick="sendOTP()">Send Demo OTP</button>
+<input id="otp" maxlength="6" placeholder="Enter OTP">
+<button onclick="verifyOTP()">Verify OTP / Login</button>
+<p id="loginMessage"></p>
+<p style="font-size:12px;color:gray;margin-top:10px">
+Demo OTP only. No real SMS is sent.
+</p>
+</div>
+</section>
+
+<section>
+<h2 class="section-title">About Dream Home</h2>
+<div class="panel">
+<p>Dream Home is a real estate website where users can explore houses, flats, lands and properties. Users can search properties by location, buy or rent properties and add their own properties for sale or rent.</p>
+</div>
+</section>
+
+<footer>
+<h3>🏡 Dream Home Real Estate</h3>
+<p>Find Your Dream Property With Us</p>
+<p>© 2026 Dream Home. All Rights Reserved.</p>
+</footer>
+
+<script>
+let properties = [
+{
+name:"Beautiful Family House",
+location:"Chittoor",
+type:"House",
+purpose:"Buy",
+price:4500000,
+contact:"7989569361",
+image:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700"
+},
+{
+name:"Modern Luxury Flat",
+location:"Phagwara",
+type:"Flat",
+purpose:"Rent",
+price:12000,
+contact:"6281577749",
+image:"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=700"
+},
+{
+name:"Residential Land",
+location:"Hyderabad",
+type:"Land",
+purpose:"Buy",
+price:2500000,
+contact:"7330822521",
+image:"https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=700"
+},
+{
+name:"Premium City House",
+location:"Vijayawada",
+type:"House",
+purpose:"Buy",
+price:5500000,
+contact:"8500558392",
+image:"https://images.unsplash.com/photo-1600047509807-ba8f99d2cd8c?w=700"
+}
+];
+
+function displayProperties(list){
+const container=document.getElementById("propertyList");
+container.innerHTML="";
+
+if(list.length===0){
+document.getElementById("message").textContent="No properties found. Try another search.";
+return;
+}
+
+document.getElementById("message").textContent="Showing "+list.length+" properties";
+
+list.forEach((p)=>{
+const card=document.createElement("div");
+card.className="card";
+
+const img=document.createElement("img");
+img.src=p.image;
+img.alt=p.name;
+img.onerror=()=>img.style.display="none";
+
+const content=document.createElement("div");
+content.className="card-content";
+
+const title=document.createElement("h3");
+title.textContent=p.name;
+
+const location=document.createElement("p");
+location.textContent="📍 "+p.location;
+
+const type=document.createElement("p");
+type.textContent="Property: "+p.type+" | "+p.purpose;
+
+const price=document.createElement("p");
+price.className="price";
+price.textContent="₹ "+Number(p.price).toLocaleString("en-IN");
+
+const contact=document.createElement("button");
+contact.textContent="Contact Seller";
+contact.onclick=()=>alert("Seller Contact: "+p.contact);
+
+content.append(title,location,type,price,contact);
+card.append(img,content);
+container.appendChild(card);
+});
+}
+
+function searchProperties(){
+const city=document.getElementById("city").value.trim().toLowerCase();
+const category=document.getElementById("category").value;
+const purpose=document.getElementById("purpose").value;
+
+let result=properties.filter(p=>{
+return (!city || p.location.toLowerCase().includes(city)) &&
+(category==="All" || p.type===category) &&
+(purpose==="All" || p.purpose===purpose);
+});
+
+displayProperties(result);
+
+if(city && result.length===0){
+document.getElementById("message").textContent=
+"No demo listings found for "+city+". Add a property for this location below.";
+}
+}
+
+function addProperty(){
+const name=document.getElementById("pname").value.trim();
+const location=document.getElementById("plocation").value.trim();
+const type=document.getElementById("ptype").value;
+const purpose=document.getElementById("ppurpose").value;
+const price=document.getElementById("pprice").value;
+const contact=document.getElementById("pcontact").value.trim();
+
+if(!name || !location || !price || !contact){
+alert("Please fill all property details");
+return;
+}
+
+if(Number(price)<=0){
+alert("Enter a valid price");
+return;
+}
+
+if(!/^[0-9]{10}$/.test(contact)){
+alert("Enter a valid 10 digit contact number");
+return;
+}
+
+properties.push({
+name:name,
+location:location,
+type:type,
+purpose:purpose,
+price:Number(price),
+contact:contact,
+image:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=700"
+});
+
+displayProperties(properties);
+document.getElementById("addMessage").textContent="Property added successfully!";
+document.getElementById("pname").value="";
+document.getElementById("plocation").value="";
+document.getElementById("pprice").value="";
+document.getElementById("pcontact").value="";
+}
+
+let generatedOTP="";
+
+function sendOTP(){
+const name=document.getElementById("username").value.trim();
+const mobile=document.getElementById("mobile").value.trim();
+
+if(!name || !/^[0-9]{10}$/.test(mobile)){
+alert("Enter your name and valid 10 digit mobile number");
+return;
+}
+
+generatedOTP=String(Math.floor(100000+Math.random()*900000));
+alert("Your DEMO OTP is: "+generatedOTP);
+document.getElementById("loginMessage").textContent="Demo OTP generated. Enter it above.";
+}
+
+function verifyOTP(){
+const entered=document.getElementById("otp").value.trim();
+
+if(!generatedOTP){
+alert("Please generate OTP first");
+return;
+}
+
+if(entered===generatedOTP){
+document.getElementById("loginMessage").textContent=
+"Login successful! Welcome "+document.getElementById("username").value;
+generatedOTP="";
+}else{
+alert("Incorrect OTP. Try again.");
+}
+}
+
+displayProperties(properties);
+</script>
+
+</body>
+</html>
